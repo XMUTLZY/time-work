@@ -5,10 +5,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sch.project.timework.http.request.WorkRequest;
 import sch.project.timework.http.response.BaseResponse;
 import sch.project.timework.http.response.LayerResponse;
 import sch.project.timework.service.WorkInfoService;
@@ -40,5 +42,14 @@ public class WorkInfoController {
     @ResponseBody
     public BaseResponse workApply(@RequestParam Integer workId, HttpServletRequest request) {
         return workInfoService.workApply(workId, request);
+    }
+
+    /**
+     * 添加报名
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse add(@RequestBody WorkRequest request, HttpServletRequest httpServletRequest) {
+        return workInfoService.add(request, httpServletRequest);
     }
 }

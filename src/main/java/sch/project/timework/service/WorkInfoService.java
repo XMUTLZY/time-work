@@ -10,6 +10,7 @@ import sch.project.timework.constant.CommonConstants;
 import sch.project.timework.domain.UserApplyEntity;
 import sch.project.timework.domain.UserEntity;
 import sch.project.timework.domain.WorkInfoEntity;
+import sch.project.timework.http.request.WorkRequest;
 import sch.project.timework.http.response.BaseResponse;
 import sch.project.timework.http.response.LayerResponse;
 import sch.project.timework.http.vo.WorkInfo;
@@ -76,6 +77,16 @@ public class WorkInfoService {
         userApplyEntity.setWorkId(workId);
         userApplyEntity.setCreateTime(new Date());
         userApplyRepository.save(userApplyEntity);
+        return new BaseResponse();
+    }
+
+    public BaseResponse add(WorkRequest request, HttpServletRequest httpServletRequest) {
+        UserEntity userEntity = CommonUtils.getCurrentUserInfo(httpServletRequest);
+        WorkInfoEntity workInfoEntity = new WorkInfoEntity();
+        BeanUtils.copyProperties(request, workInfoEntity);
+        workInfoEntity.setUserId(userEntity.getId());
+        workInfoEntity.setCreateTime(new Date());
+        workInfoRepository.save(workInfoEntity);
         return new BaseResponse();
     }
 }

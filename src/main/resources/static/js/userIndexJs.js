@@ -4,7 +4,6 @@ $(function () {
 var userIndexJs = {
     bindEvent: function () {
         userIndexJs.event.workInfoList('all');
-        userIndexJs.event.importStudentList();
     },
     event: {
         workInfoList: function (type) {
@@ -160,23 +159,23 @@ var userIndexJs = {
                 });
             });
         },
-        addQuestionDialog: function () {
+        toRelease: function () {
             layui.use('layer', function (layer) {
                 layer.open({
                     type: 1
                     , skin: 'examine-refuse-popup'
                     , offset: 'auto'
-                    , title: '新增题目'
+                    , title: '我要发布'
                     , id: 'layer-id'
                     , area: ['500px', '600px']
-                    , content: $("#dialog-add-question-info")
+                    , content: $("#dialog-add-work-info")
                     , btn: ['确定', '取消']
                     , shade: 0.5 //不显示遮罩
                     , end: function () {
-                        $("#dialog-add-question-info").css("display", "none");
+                        $("#dialog-add-work-info").css("display", "none");
                     }
                     , yes: function () {
-                        adminIndexJs.method.addQuestion();
+                        userIndexJs.method.addWorkInfo();
                     }
                     , btn2: function () {
 
@@ -184,26 +183,38 @@ var userIndexJs = {
                 });
             });
         },
-        addQuestion: function () {
+        addWorkInfo: function () {
             layer.close(layer.index);
             var data = {};
-            data.project_id = $("#add-project").val();
-            data.project_name = $("#add-project option:selected").text();
-            data.question_text = $("#add-question-text").val();
-            data.answer_a = $("#add-answer-a").val();
-            data.answer_b = $("#add-answer-b").val();
-            data.answer_c = $("#add-answer-c").val();
-            data.answer_d = $("#add-answer-d").val();
-            data.correct_answer = $("#add-correct-answer").val();
+            data.title = $("#add-title").val();
+            data.content = $("#add-content").val();
+            data.address = $("#add-address").val();
+            data.work_time = $("#add-work-time").val();
+            if (!data.title) {
+                layer.msg("主题不允许为空");
+                return;
+            }
+            if (!data.content) {
+                layer.msg("内容不允许为空");
+                return;
+            }
+            if (!data.address) {
+                layer.msg("地址不允许为空");
+                return;
+            }
+            if (!data.work_time) {
+                layer.msg("工作时间不允许为空");
+                return;
+            }
             $.ajax({
-                url: '../question/question-add',
+                url: '../work/add',
                 type: 'post',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
                 success: function (result) {
                     if (result.status_code == 200) {
-                        layer.msg('添加题目成功');
-                        adminIndexJs.event.questionList();
+                        layer.msg('发布成功');
+                        userIndexJs.event.workInfoList('my');
                     } else {
                         layer.msg(result.message);
                     }
