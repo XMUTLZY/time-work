@@ -27,6 +27,11 @@ public class ViewController {
         return "/userLogin";
     }
 
+    @RequestMapping("/register")
+    public String userRegister() {
+        return "/userRegister";
+    }
+
     private String commonView(HttpServletRequest request, Model model) {
         UserEntity userEntity = CommonUtils.getCurrentUserInfo(request);
         // 当前没有用户登录

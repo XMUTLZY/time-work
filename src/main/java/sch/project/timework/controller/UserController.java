@@ -26,4 +26,13 @@ public class UserController {
     public BaseResponse login(@RequestBody UserRequest request, HttpServletRequest httpServletRequest, HttpServletResponse response) {
         return userService.login(request, httpServletRequest, response);
     }
+
+    /**
+     * 注册
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse register(@RequestBody UserRequest request) {
+        return userService.register(request);
+    }
 }
